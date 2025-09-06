@@ -34,10 +34,9 @@ export default async function ProductDetailPage({ params }: PageProps) {
   const { product, relatedProducts } = await getProductData(params.id);
 
   return (
-    <main className="container mx-auto px-4 pt-24 pb-12 sm:px-6 lg:px-8">
-      {/* Main Product Section */}
+    <main className="container mx-auto px-6 pt-24 pb-12 sm:px-8 lg:px-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Product Image */}
+        {/* Image */}
         <div>
           <ProductImage
             imageUrl={product.image_url}
@@ -45,7 +44,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
           />
         </div>
 
-        {/* Product Details */}
+        {/* Details */}
         <div className="flex flex-col">
           <h1 className="text-3xl font-bold">{product.product_name}</h1>
           <p className="text-lg text-gray-500 mt-1">{product.brand}</p>
@@ -65,7 +64,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Related Products Section */}
+      {/* Related Products */}
       <div className="mt-16">
         <h2 className="text-2xl font-bold mb-6">Related Products</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

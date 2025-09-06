@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useCart } from "@/app/context/CartContext";
 
 export default function Header() {
@@ -12,7 +13,14 @@ export default function Header() {
         className="container mx-auto flex items-center justify-between p-6 lg:px-8"
         aria-label="Global"
       >
-        <div className="flex lg:flex-1">
+        <div className="flex lg:flex-1 items-center">
+          <Image
+            src="/logo.png"
+            alt="Fun Ecommerce Co. Logo"
+            width={32}
+            height={32}
+            className="h-10 mr-1 w-auto"
+          />
           <Link
             href="/"
             className="-m-1.5 p-1.5 text-xl font-bold text-gray-900"
@@ -26,6 +34,12 @@ export default function Header() {
             className="text-sm font-semibold leading-6 text-gray-900"
           >
             Products
+          </Link>
+          <Link
+            href="/about"
+            className="text-sm font-semibold leading-6 text-gray-900"
+          >
+            About Us
           </Link>
           <Link href="/cart" className="relative text-gray-900">
             <svg
@@ -43,7 +57,7 @@ export default function Header() {
               />
             </svg>
             {cartCount > 0 && (
-              <span className="absolute -top-2 -right-3 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-xs text-white">
+              <span className="absolute -top-2 -right-3 flex h-5 w-5 items-center justify-center rounded-full bg-green-500 -green text-xs text-white">
                 {cartCount}
               </span>
             )}

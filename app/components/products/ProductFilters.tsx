@@ -2,11 +2,22 @@
 
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
+const sortOptions = [
+  { value: "price-asc", label: "Price: Low to High" },
+  { value: "price-desc", label: "Price: High to Low" },
+  { value: "name-asc", label: "Name: A-Z" },
+  { value: "name-desc", label: "Name: Z-A" },
+];
+
 interface ProductFiltersProps {
   categories: string[];
   brands: string[];
   perPageOptions: number[];
 }
+
+// Helper to capitalize letters
+const capitalizeWords = (s: string) =>
+  s.replace(/\b\w/g, (char) => char.toUpperCase());
 
 export default function ProductFilters({
   categories,
@@ -14,25 +25,31 @@ export default function ProductFilters({
   perPageOptions,
 }: ProductFiltersProps) {
   const searchParams = useSearchParams();
-  const pathname = usePathname();
+  const path = usePathname();
   const { replace } = useRouter();
 
-  const defaultLimit = perPageOptions[0] || 10;
+  const limit = perPageOptions[0] || 10;
 
+  // Called whenever the filter dropdown changes
   const handleFilterChange = (filterType: string, value: string) => {
     const params = new URLSearchParams(searchParams);
+    // Always go back to page 1
     params.set("page", "1");
     if (value) {
+      // If a value is selected, set it in the URL
       params.set(filterType, value);
     } else {
+      // If "All" option (empty value), remove the filter from the URL
       params.delete(filterType);
     }
-    replace(`${pathname}?${params.toString()}`);
+
+    replace(`${path}?${params.toString()}`);
   };
 
+  // Reusable styles
   const selectStyles =
-    "appearance-none w-full sm:w-auto bg-white border border-gray-300 rounded-md py-2 px-4 pr-8 text-sm shadow-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500";
-  const selectWrapperStyles = "relative w-full sm:w-auto";
+    "appearance-none w-full sm:w-auto bg-white border border-gray-300 rounded-md py-2 px-4 pr-8 text-sm shadow-sm transition-colors focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500";
+  const selectWrapper = "relative w-full sm:w-auto";
   const selectIcon = (
     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
       <svg
@@ -47,7 +64,8 @@ export default function ProductFilters({
 
   return (
     <div className="flex flex-col sm:flex-row flex-wrap items-center gap-4">
-      <div className={selectWrapperStyles}>
+      {/* Category */}
+      <div className={selectWrapper}>
         <select
           onChange={(e) => handleFilterChange("category", e.target.value)}
           defaultValue={searchParams.get("category")?.toString() || ""}
@@ -56,14 +74,15 @@ export default function ProductFilters({
           <option value="">All Categories</option>
           {categories.map((c) => (
             <option key={c} value={c}>
-              {c}
+              {capitalizeWords(c)}
             </option>
           ))}
         </select>
         {selectIcon}
       </div>
 
-      <div className={selectWrapperStyles}>
+      {/* Brand */}
+      <div className={selectWrapper}>
         <select
           onChange={(e) => handleFilterChange("brand", e.target.value)}
           defaultValue={searchParams.get("brand")?.toString() || ""}
@@ -79,25 +98,28 @@ export default function ProductFilters({
         {selectIcon}
       </div>
 
-      <div className={selectWrapperStyles}>
+      {/* Sort By */}
+      <div className={selectWrapper}>
         <select
           onChange={(e) => handleFilterChange("sort", e.target.value)}
           defaultValue={searchParams.get("sort")?.toString() || ""}
           className={selectStyles}
         >
           <option value="">Sort By</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-          <option value="name-asc">Name: A-Z</option>
-          <option value="name-desc">Name: Z-A</option>
+          {sortOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
         {selectIcon}
       </div>
 
-      <div className={selectWrapperStyles}>
+      {/* Per Page */}
+      <div className={selectWrapper}>
         <select
           onChange={(e) => handleFilterChange("limit", e.target.value)}
-          defaultValue={searchParams.get("limit")?.toString() || defaultLimit}
+          defaultValue={searchParams.get("limit")?.toString() || limit}
           className={selectStyles}
         >
           {perPageOptions.map((option) => (

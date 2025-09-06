@@ -11,16 +11,18 @@ interface ProductImageProps {
 
 export default function ProductImage({ imageUrl, altText }: ProductImageProps) {
   return (
-    <Zoom>
-      <div className="relative aspect-square">
-        <Image
-          src={imageUrl}
-          alt={altText}
-          fill
-          sizes="(max-width: 768px) 100vw, 50vw"
-          className="object-cover rounded-lg"
-        />
-      </div>
-    </Zoom>
+    <div className="overflow-hidden rounded-lg shadow-sm max-w-lg mx-auto">
+      <Zoom>
+        <div className="relative aspect-square">
+          <Image
+            src={imageUrl}
+            alt={altText}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+            className="object-cover transition-transform duration-300 ease-in-out hover:scale-105"
+          />
+        </div>
+      </Zoom>
+    </div>
   );
 }

@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import allProducts from "@/app/test_data_large.json";
-import { Product } from "@/app/types";
 
 interface Params {
   params: {
@@ -8,7 +7,10 @@ interface Params {
   };
 }
 
-export async function GET(request: Request, { params }: Params) {
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   const id = params.id;
   const productId = parseInt(id, 10);
 
@@ -18,12 +20,12 @@ export async function GET(request: Request, { params }: Params) {
     return NextResponse.json({ error: "Product not found" }, { status: 404 });
   }
 
-  // Find related products (from the same category, excluding the current one)
+  // Related products! (same category, excluding the current one)
   const relatedProducts = allProducts
     .filter(
       (p) => p.category === product.category && p.product_id !== productId
     )
-    .slice(0, 4); // Limit to 4 related products
+    .slice(0, 4); // Limit to 4
 
   return NextResponse.json({
     product,

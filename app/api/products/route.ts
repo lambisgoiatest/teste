@@ -3,6 +3,7 @@ import allProducts from "@/app/test_data_large.json";
 import { Product } from "@/app/types";
 
 export async function GET(request: NextRequest) {
+  // Grabing query params from the URL
   const { searchParams } = new URL(request.url);
   const page = parseInt(searchParams.get("page") || "1", 10);
   const limit = parseInt(searchParams.get("limit") || "10", 10);
@@ -13,7 +14,7 @@ export async function GET(request: NextRequest) {
 
   let filteredProducts: Product[] = allProducts;
 
-  // Search/filters/sorting
+  // Search and filtering
   if (query) {
     filteredProducts = filteredProducts.filter(
       (p) =>
@@ -30,6 +31,7 @@ export async function GET(request: NextRequest) {
     filteredProducts = filteredProducts.filter((p) => p.brand === brand);
   }
 
+  // Sorting
   if (sort) {
     switch (sort) {
       case "price-asc":
@@ -50,7 +52,7 @@ export async function GET(request: NextRequest) {
         break;
     }
   }
-
+  // Pagination
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
   const paginatedProducts = filteredProducts.slice(startIndex, endIndex);

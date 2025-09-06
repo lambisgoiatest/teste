@@ -8,6 +8,7 @@ export default function SearchBar() {
   const pathname = usePathname();
   const { replace } = useRouter();
 
+  // Performance! Wait 300ms after firing the search
   const handleSearch = useDebouncedCallback((term: string) => {
     const params = new URLSearchParams(searchParams);
     params.set("page", "1");
@@ -39,10 +40,10 @@ export default function SearchBar() {
       </div>
       <input
         type="text"
-        placeholder="Search for products..."
+        placeholder="Search..."
         onChange={(e) => handleSearch(e.target.value)}
         defaultValue={searchParams.get("query")?.toString()}
-        className="w-full rounded-md border border-gray-300 py-2 pl-10 pr-4 text-sm shadow-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+        className="w-full rounded-md border border-gray-300 py-2 pl-10 pr-4 text-sm shadow-sm transition-colors focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green -500"
       />
     </div>
   );
